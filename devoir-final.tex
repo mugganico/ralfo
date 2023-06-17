@@ -1,0 +1,141 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Devir final Mr},
+  pdfauthor={Joël Mugambi Nicolas, Ralf Oly Bertilus,Janvier Gerald Euclide,Leger Michelson},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Devir final Mr}
+\author{Joël Mugambi Nicolas, Ralf Oly Bertilus,Janvier Gerald
+Euclide,Leger Michelson}
+\date{2023-06-17}
+
+\begin{document}
+\maketitle
+
+\#On voulait expliquer le prduit national d'Haiti pour la periode allant
+de 1987 a 2021, on a choisi trois variables qui sont l'investissement
+direct etranger, le commerce net qu'on designe comme l'exportation nette
+et le taux d'inflation. on attend en relation positive entre les
+exportations nettes et le taux de croissance du PIB, tout comme entre
+les investissements directs etrangers. mais entre le taux d'inflation et
+le taux de croissance du PIB il existe une relation negative. on a
+decide de choisir ces trois variables parce qu'on pense qu'elles ont
+beaucoup a faire dans la mauvaise performance de l'econmie haitienne.
+\#les investissements directs etrangers devraient ameliorer l'economie
+en mettant a la disposition des agents economiques plus de fonds. Les
+exportations nettes devraient apporter de devises dans l'economie mais
+on attend a n'importe quoi puisqu'on sait que l'economie importe plus
+q'elle exporte. Pour le taux d'inflation, il devrait influence le PIB
+negativement puisqu'il fait diminuer le pouvoir d'achat des agents des
+lors il decourage les demandeurs. '\,'
+
+'\,'\,'\{r main, include=FALSE\} library(wbstats) \#Importation
+taux\_croiss \textless- wb\_data(indicator = ``NY.GDP.MKTP.KD.ZG'' ,
+country = ``HTI'' , start\_date = 1987 , end\_date = 2021) IDE
+\textless- wb\_data(indicator = ``BX.KLT.DINV.WD.GD.ZS'' , country =
+``HTI'' , start\_date = 1987 , end\_date = 2021) inflation \textless-
+wb\_data(indicator = ``FP.CPI.TOTL.ZG'' , country = ``HTI'' ,
+start\_date = 1987 , end\_date = 2021) commerce\_net \textless-
+wb\_data(indicator = ``BN.GSR.GNFS.CD'' , country = ``HTI'' ,
+start\_date = 1987 , end\_date = 2021)
+
+\#Cleaning up taux\_croissance \textless- taux\_croiss{[} ,c(3,4,5){]}
+IDE \textless- IDE{[} ,c(5){]} commerce\_net \textless- commerce\_net{[}
+,c(5){]} inf \textless- inflation{[} ,c(5){]}
+
+\#Forme matricielle des donnees mat \textless-
+cbind(taux\_croissance,IDE,commerce\_net,inf)
+
+\#Renommons les colonnes colnames(mat) \textless-
+c(``Pays'',``Annee'',``Taux\_de\_croissance'',``Investissement\_direct\_etranger'',``Exportations\_nettes'',``Taux\_dinflation'')
+
+\#Realisons la regression lineaire reg\_dj \textless-
+lm(Taux\_de\_croissance\textasciitilde Investissement\_direct\_etranger+Exportations\_nettes+Taux\_dinflation,mat)
+reg\_gt \textless- summary(reg\_dj) reg\_coefficient
+\textless-coefficients(reg\_gt) residu\_de\_regression
+\textless-residuals(reg\_gt)
+
+\#Trouver f statistics ftics
+\textless-reg\_gt\(fstatistic rtics <-reg_gt\)r.squared stats\_tab
+\textless- cbind(ftics,rtics,reg\_coefficient) '\,'\,'
+
+summary(cars) ``` \#Installation du package car library(car)
+
+\#Realisons un nuage de points pour chacune des variables independantes
+scatterplot(Taux\_de\_croissance\textasciitilde Investissement\_direct\_etranger,mat,regLine=list(method=lm,lty=1,lwd=2,col=``yellow''))
+scatterplot(Taux\_de\_croissance\textasciitilde Exportations\_nettes,mat,regLine=list(method=lm,lty=1,lwd=2,col=``orange''))
+scatterplot(Taux\_de\_croissance\textasciitilde Taux\_dinflation,mat,regLine=list(method=lm,lty=1,lwd=2,col=``green''))
+
+\#Realiser un graphique en nuage de points mettant en lien les valeurs
+residuelles et les valeurs estimeees plot(reg\_dj,which=1)
+
+\#CE graphe de nuge de points des valeurs residuelles(difference entre
+valeurs observees et valeur estimes)est a tendance positve et non
+lineaire.Ce graphe presente une homocedasticite des points, c est a dire
+a dispersion egale.
+
+\includegraphics{devoir-final_files/figure-latex/pressure-1.pdf}
+
+Note that the \texttt{echo\ =\ FALSE} parameter was added to the code
+chunk to prevent printing of the R code that generated the plot.
+
+\end{document}
